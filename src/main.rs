@@ -27,7 +27,8 @@ fn main() {
 
     let output_string_contents = generate_by_brackets(&file_contents_string);
 
-    println!("{}", output_string_contents);
+    println!("Test output:\n");
+    println!("{:?}", output_string_contents);
 }
 
 /// This function loads the file and populates an array of chars. Then it is returned and can be processed further.
@@ -68,7 +69,7 @@ fn load_file_string(file_name: &String) -> String {
 
 /// Split a string input by [] pairs.
 fn generate_by_brackets(contents_vector: &String) -> Vec<String> {
-    let words: Vec<String> = Regex::new(r"\W+")
+    let words: Vec<String> = Regex::new(r"\[*]")
         .unwrap()
         .split(&contents_vector.to_owned())
         .map(|x| x.to_string())
