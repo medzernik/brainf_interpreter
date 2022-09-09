@@ -67,17 +67,8 @@ fn load_file_string(file_name: &String) -> String {
     return file_contents_char;
 }
 
-/// Split a string input by [] pairs.
-fn generate_by_brackets(contents_vector: &String) -> Vec<String> {
-    let words: Vec<String> = Regex::new(r"\[*]")
-        .unwrap()
-        .split(&contents_vector.to_owned())
-        .map(|x| x.to_string())
-        .collect();
 
-    return words
-}
-
+//TODO: Make the triager sequentially count increases in [] and then execute into appropriate buffer position.
 fn triage_commands(contents_vector: Vec<char>) {
     enum CommandKind {
         IncrementPointer,
