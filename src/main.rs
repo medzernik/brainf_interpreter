@@ -1,11 +1,10 @@
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
-use std::string;
+use std::str;
 use std::string::String;
 
 use clap::Parser;
-use regex::Regex;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -14,6 +13,7 @@ struct Args {
     /// Name of the person to greet
     #[clap(short, long, value_parser)]
     file: String,
+
 }
 
 fn main() {
@@ -68,11 +68,25 @@ fn load_file_string(file_name: &String) -> String {
     return file_contents_char;
 }
 
+//function that computes fibonacchi numbers
+fn fib(n: u32) -> u32 {
+    if n == 0 {
+        return 0;
+    } else if n == 1 {
+        return 1;
+    } else {
+        return fib(n - 1) + fib(n - 2);
+    }
+}
+
 
 //TODO: Make the triager sequentially count increases in [] and then execute into appropriate buffer position.
 fn triage_commands(contents_vector: Vec<char>) {
-    let
+    let mut counter = 0;
+    let mut index = 0;
 
+
+    let mut data_array: [u8; 30000] = [0; 30000];
 
     enum CommandKind {
         IncrementPointer,
@@ -88,15 +102,28 @@ fn triage_commands(contents_vector: Vec<char>) {
 
     for character in contents_vector {
         match character {
-            '>' => {}
-            '<' => {}
-            '+' => {}
-            '-' => {}
-            '.' => {}
-            ',' => {}
-            '[' => {}
-            ']' => {}
+            '>' => { index += 1; },
+            '<' => { index -= 1; },
+            '+' => { data_array[index] += 1; },
+            '-' => { data_array[index] -= 1; },
+            '.' => {
+                print!("{}", data_array[index]);
+            },
+            ',' => {
+                let mut input = String::new();
+                std::io::stdin().read_line(&mut input).expect("Failed to read line");
+                let input: u8 = input.trim().parse().expect("Please type a number!");
+                data_array[index] = input;
+            },
+            '[' => {
+                counter += 1;
+                println!("counter increased: {}", counter)
+            },
+            ']' => {
+                counter -= 1;
+                println!("counter decerased: {}", counter)
+            },
             _ => {},
-        }
+        };
     }
 }
