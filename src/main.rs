@@ -13,7 +13,6 @@ struct Args {
     /// Name of the person to greet
     #[clap(short, long, value_parser)]
     file: String,
-
 }
 
 fn main() {
@@ -24,7 +23,6 @@ fn main() {
     triage_commands(file_contents_char);
 
     let file_contents_string = load_file(&args.file);
-
 
     println!("Test output:\n");
     println!("{:?}", file_contents_string);
@@ -79,12 +77,11 @@ fn fib(n: u32) -> u32 {
     }
 }
 
-
 //TODO: Make the triager sequentially count increases in [] and then execute into appropriate buffer position.
 fn triage_commands(contents_vector: Vec<char>) {
-    let mut counter = 0;
-    let mut index = 0;
-
+    let mut loop_counter = 0;
+    let mut data_index = 0;
+    let mut code_index = 0;
 
     let mut data_array: [u8; 30000] = [0; 30000];
 
@@ -100,30 +97,56 @@ fn triage_commands(contents_vector: Vec<char>) {
         Comment,
     }
 
-    for character in contents_vector {
-        match character {
-            '>' => { index += 1; },
-            '<' => { index -= 1; },
-            '+' => { data_array[index] += 1; },
-            '-' => { data_array[index] -= 1; },
-            '.' => {
-                print!("{}", data_array[index]);
-            },
-            ',' => {
-                let mut input = String::new();
-                std::io::stdin().read_line(&mut input).expect("Failed to read line");
-                let input: u8 = input.trim().parse().expect("Please type a number!");
-                data_array[index] = input;
-            },
-            '[' => {
-                counter += 1;
-                println!("counter increased: {}", counter)
-            },
-            ']' => {
-                counter -= 1;
-                println!("counter decerased: {}", counter)
-            },
-            _ => {},
-        };
+    while &code_index < &contents_vector.len() {
+        for character in &contents_vector {
+            match character {
+                '>' => {
+                    data_index += 1;
+                }
+                '<' => {
+                    data_index -= 1;
+                }
+                '+' => {
+                    data_array[data_index] += 1;
+                }
+                '-' => {
+                    data_array[data_index] -= 1;
+                }
+                '.' => {
+                    println!("{}", data_array[data_index]);
+                }
+                ',' => {
+                    let mut input = String::new();
+                    std::io::stdin()
+                        .read_line(&mut input)
+                        .expect("Failed to read line");
+                    let input: u8 = input.trim().parse().expect("Please type a number!");
+                    data_array[data_index] = input;
+                }
+                '[' => {
+                    loop_counter += 1;
+
+                    if data_array[data_index] == 0 {
+                        code_index += 1;
+                        while contents_vector[code_index] != ']' && loop_counter > 0 {
+                            code_index += 1;
+
+                            if contents_vector[code_index] == '[' {
+                                loop_counter += 1;
+                            } else if contents_vector[code_index] == ']' {
+                                loop_counter -= 1;
+                            }
+                        };
+                    };
+
+                    println!("loop increased increased: {}", loop_counter);
+                }
+                ']' => {
+                    loop_counter -= 1;
+                    println!("loop counter decerased: {}", loop_counter);
+                }
+                _ => {}
+            };
+        }
     }
 }
