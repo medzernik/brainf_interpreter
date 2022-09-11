@@ -23,17 +23,18 @@ fn main() {
 
     triage_commands(file_contents_char);
 
-    let file_contents_string = load_file_string(&args.file);
+    let file_contents_string = load_file(&args.file);
 
-    let output_string_contents = generate_by_brackets(&file_contents_string);
 
     println!("Test output:\n");
-    println!("{:?}", output_string_contents);
+    println!("{:?}", file_contents_string);
 }
 
 /// This function loads the file and populates an array of chars. Then it is returned and can be processed further.
 /// usage:
-/// ```let _ = loadfile("examples\01-hello-world.bf");```
+/// ```
+/// let _ = loadfile("examples\01-hello-world.bf");
+/// ```
 fn load_file(file_name: &String) -> Vec<char> {
     let mut file_contents_char: Vec<char> = Vec::new();
 
@@ -70,6 +71,9 @@ fn load_file_string(file_name: &String) -> String {
 
 //TODO: Make the triager sequentially count increases in [] and then execute into appropriate buffer position.
 fn triage_commands(contents_vector: Vec<char>) {
+    let
+
+
     enum CommandKind {
         IncrementPointer,
         DecrementPointer,
