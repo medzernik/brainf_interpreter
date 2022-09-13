@@ -92,6 +92,7 @@ fn triage_commands(contents_vector: Vec<char>) {
                     }
                 }
                 data_array[data_index] += 1;
+                println!("Increasing {1} to: {0}", data_array[data_index], data_index);
             }
             '-' => match data_array[data_index].checked_sub(1) {
                 Some(x) => {
