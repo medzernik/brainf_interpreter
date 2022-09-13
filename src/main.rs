@@ -1,6 +1,6 @@
 use std::fs::File;
-use std::io::BufReader;
 use std::io::prelude::*;
+use std::io::BufReader;
 use std::string::String;
 
 use clap::Parser;
@@ -82,11 +82,26 @@ fn triage_commands(contents_vector: Vec<char>) {
                 data_index -= 1;
             }
             '+' => {
+                match data_array[data_index].checked_add(1) {
+                    Some(x) => {
+                        println!("Increasing {1} to: {0}", data_array[data_index], data_index);
+                        data_array[data_index] = x;
+                    }
+                    None => {
+                        println!("Overflow");
+                    }
+                }
                 data_array[data_index] += 1;
             }
-            '-' => {
-                data_array[data_index] -= 1;
-            }
+            '-' => match data_array[data_index].checked_sub(1) {
+                Some(x) => {
+                    data_array[data_index] = x;
+                    println!("Decreasing {1} to: {0}", data_array[data_index], data_index);
+                }
+                None => {
+                    println!("Underflow detected!")
+                }
+            },
             '.' => {
                 println!("{}", data_array[data_index]);
             }
