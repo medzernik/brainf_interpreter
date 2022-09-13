@@ -14,6 +14,7 @@ struct Args {
     file: String,
 }
 
+
 fn main() {
     let args = Args::parse();
 
@@ -42,27 +43,8 @@ fn load_file(file_name: &String) -> Vec<char> {
 
     return file_contents_char;
 }
-/*
-///Load the file into a string (one lined)
-fn load_file_string(file_name: &String) -> String {
-    let mut file_contents_char = String::new();
 
-    let file = File::open(file_name).expect("error opening the file");
-    let reader = BufReader::new(file);
-
-    //old function
-    for line in reader.lines() {
-        for ch in line.expect("Unable to read line").chars() {
-            file_contents_char.push(ch);
-        }
-    }
-
-    return file_contents_char;
-}
-
- */
-
-//TODO: Make the triager sequentially count increases in [] and then execute into appropriate buffer position.
+/// This function takes the array of chars and processes them.
 fn triage_commands(contents_vector: Vec<char>) {
     let mut loop_counter = 0;
     let mut data_index = 0;
@@ -84,27 +66,24 @@ fn triage_commands(contents_vector: Vec<char>) {
             '+' => {
                 match data_array[data_index].checked_add(1) {
                     Some(x) => {
-                        println!("Increasing {1} to: {0}", data_array[data_index], data_index);
                         data_array[data_index] = x;
                     }
                     None => {
                         println!("Overflow");
                     }
                 }
-                data_array[data_index] += 1;
-                println!("Increasing {1} to: {0}", data_array[data_index], data_index);
             }
             '-' => match data_array[data_index].checked_sub(1) {
                 Some(x) => {
                     data_array[data_index] = x;
-                    println!("Decreasing {1} to: {0}", data_array[data_index], data_index);
+                    //println!("Decreasing {} to: {}",data_index, data_array[data_index]);
                 }
                 None => {
-                    println!("Underflow detected!")
+                    println!("Underflow detected!");
                 }
             },
             '.' => {
-                println!("{}", data_array[data_index]);
+                print!("{}", data_array[data_index] as char);
             }
             ',' => {
                 let mut input = String::new();
