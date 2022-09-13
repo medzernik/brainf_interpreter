@@ -67,6 +67,7 @@ fn triage_commands(contents_vector: Vec<char>) {
                 match data_array[data_index].checked_add(1) {
                     Some(x) => {
                         data_array[data_index] = x;
+                        //println!("Increasing {} to: {}", data_index, data_array[data_index]);
                     }
                     None => {
                         println!("Overflow");
@@ -94,9 +95,10 @@ fn triage_commands(contents_vector: Vec<char>) {
                 data_array[data_index] = input;
             }
             '[' => {
+                //println!("Starting loop {}", loop_counter);
                 if data_array[data_index] == 0 {
                     code_index += 1;
-                    while contents_vector[code_index] != ']' && loop_counter > 0 {
+                    while contents_vector[code_index] != ']' || loop_counter > 0 {
                         if contents_vector[code_index] == '[' {
                             loop_counter += 1;
                         } else if contents_vector[code_index] == ']' {
@@ -107,17 +109,18 @@ fn triage_commands(contents_vector: Vec<char>) {
                 };
             }
             ']' => {
+                //println!("Ending loop {}", loop_counter);
                 if data_array[data_index] != 0 {
                     code_index -= 1;
-                    while contents_vector[code_index] != '[' && loop_counter > 0 {
+                    while contents_vector[code_index] != '[' || loop_counter > 0 {
                         if contents_vector[code_index] == '[' {
-                            loop_counter += 1;
-                        } else if contents_vector[code_index] == ']' {
                             loop_counter -= 1;
+                        } else if contents_vector[code_index] == ']' {
+                            loop_counter += 1;
                         }
                         code_index -= 1;
                     }
-                    code_index += 1;
+                    code_index -= 1;
                 };
             }
             _ => {}
